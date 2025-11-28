@@ -1,0 +1,12 @@
+{
+  "configurations": [
+    {
+      "name": "FastAPI Server",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "uvicorn",
+      "args": ["main:app", "--reload", "--port", "8090"],
+      "jinja": true
+    }
+  ]
+}

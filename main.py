@@ -79,15 +79,15 @@ async def get_todos(todo_id: int, res: Response) -> TodoItemWithArtifact:
             f"https://jsonplaceholder.typicode.com/todos/{todo_id}"
         )
 
+        cf_ray = response.headers.get("cf-ray", "unknown")
+        res.headers["cf-ray"] = cf_ray
+
         try:
             response.raise_for_status()
         except HTTPStatusError:
             raise HTTPException(http.HTTPStatus.NOT_FOUND, detail="Todo item not found")
 
         logger.info("Todos status:", extra={"status_code": response.status_code})
-
-        cf_ray = response.headers.get("cf-ray", "unknown")
-        res.headers["cf-ray"] = cf_ray
 
         data: Dict[str, Any] = response.json()
         todo: TodoItemWithArtifact = TodoItemWithArtifact.model_validate(data)

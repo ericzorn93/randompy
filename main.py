@@ -74,7 +74,7 @@ async def get_todos(res: Response) -> List[TodoItemWithArtifact]:
     tags=["Todos"],
     description="Find a specific todo id",
 )
-async def get_todos(todo_id: int, res: Response) -> TodoItemWithArtifact:
+async def get_single_todo(todo_id: int, res: Response) -> TodoItemWithArtifact:
     async with AsyncClient() as client:
         response = await client.get(
             f"https://jsonplaceholder.typicode.com/todos/{todo_id}"

@@ -88,7 +88,7 @@ async def get_todos(todo_id: int, res: Response) -> TodoItemWithArtifact:
         except HTTPStatusError:
             raise HTTPException(http.HTTPStatus.NOT_FOUND, detail="Todo item not found")
 
-        logger.info("Todos status:", extra={"status_code": response.status_code})
+        logger.info(f"Todos status: {response.status_code}")
 
         data: Dict[str, Any] = response.json()
         todo: TodoItemWithArtifact = TodoItemWithArtifact.model_validate(data)

@@ -55,7 +55,7 @@ async def get_todos(res: Response) -> List[TodoItemWithArtifact]:
     async with AsyncClient() as client:
         response = await client.get("https://jsonplaceholder.typicode.com/todos")
         response.raise_for_status()
-        logger.info("Todos status:", extra={"status_code": response.status_code})
+        logger.info(f"Todos status: {response.status_code}")
 
         cf_ray = response.headers.get("cf-ray", "unknown")
         res.headers["cf-ray"] = cf_ray

@@ -12,6 +12,7 @@ RUN apk add --no-cache --update build-base libffi-dev openssl-dev git curl
 RUN python -m pip install --upgrade pip
 RUN python -m pip install --no-cache-dir uv
 COPY pyproject.toml ./
+
 # Create the virtualenv (uv uses .venv) and sync the project environment
 RUN uv venv --python python && \
   uv sync

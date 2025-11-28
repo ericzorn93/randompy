@@ -1,9 +1,10 @@
+import http
 import logging
 import uuid
 from typing import Any, Dict, List
 
-from fastapi import FastAPI, Response
-from httpx import AsyncClient
+from fastapi import FastAPI, HTTPException, Response
+from httpx import AsyncClient, HTTPStatusError
 from pydantic import BaseModel, Field, computed_field
 from pydantic.alias_generators import to_camel
 from pydantic.config import ConfigDict
@@ -77,7 +78,12 @@ async def get_todos(todo_id: int, res: Response) -> TodoItemWithArtifact:
         response = await client.get(
             f"https://jsonplaceholder.typicode.com/todos/{todo_id}"
         )
-        response.raise_for_status()
+
+        try:
+            response.raise_for_status()
+        except HTTPStatusError:
+            raise HTTPException(http.HTTPStatus.NOT_FOUND, detail="Todo item not found")
+
         logger.info("Todos status:", extra={"status_code": response.status_code})
 
         cf_ray = response.headers.get("cf-ray", "unknown")

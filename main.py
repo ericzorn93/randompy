@@ -9,6 +9,7 @@ from pydantic import BaseModel, Field, computed_field
 from pydantic.alias_generators import to_camel
 from pydantic.config import ConfigDict
 
+logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("todoApiLogger")
 
 app = FastAPI(

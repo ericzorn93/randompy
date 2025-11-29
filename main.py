@@ -52,7 +52,7 @@ class HealthcheckResponse(BaseModel):
 
 
 @app.get(
-    "/health",
+    "/healthz",
     response_model=HealthcheckResponse,
     tags=["Health"],
     description="Health check endpoint",

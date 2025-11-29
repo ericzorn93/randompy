@@ -48,7 +48,11 @@ class TodoItemWithArtifact(TodoItem):
 class HealthcheckResponse(BaseModel):
     model_config = ConfigDict(alias_generator=to_camel, populate_by_name=True)
 
-    status: str = Field("", description="The health status of the API")
+    status: str = Field(
+        "ok",
+        description="The health status of the API",
+        examples=["ok", "degraded", "down"],
+    )
 
 
 @app.get(

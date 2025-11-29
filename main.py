@@ -45,6 +45,22 @@ class TodoItemWithArtifact(TodoItem):
         return str(uuid.uuid5(uuid.NAMESPACE_URL, f"{self.id}-{self.title}"))
 
 
+class HealthcheckResponse(BaseModel):
+    model_config = ConfigDict(alias_generator=to_camel, populate_by_name=True)
+
+    status: str = Field("", description="The health status of the API")
+
+
+@app.get(
+    "/health",
+    response_model=HealthcheckResponse,
+    tags=["Health"],
+    description="Health check endpoint",
+)
+async def health_check() -> HealthcheckResponse:
+    return HealthcheckResponse(status="ok")
+
+
 @app.get(
     "/todos",
     response_model=List[TodoItemWithArtifact],

@@ -1,4 +1,3 @@
-from llm import make_llm_calls, LLMResponse
 import http
 import logging
 import uuid
@@ -11,6 +10,8 @@ from httpx import AsyncClient, HTTPStatusError
 from pydantic import BaseModel, Field, computed_field
 from pydantic.alias_generators import to_camel
 from pydantic.config import ConfigDict
+
+from llm import LLMResponse, make_llm_calls
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("todoApiLogger")
@@ -128,6 +129,6 @@ async def get_single_todo(todo_id: int, res: Response) -> TodoItemWithArtifact:
         return todo
 
 
-@app.get("/ai")
+@app.get("/llm", response_model=LLMResponse, tags=["LLM"], description="Make LLM calls")
 async def make_ai_call() -> LLMResponse:
     return await make_llm_calls()

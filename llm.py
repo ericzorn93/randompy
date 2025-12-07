@@ -1,5 +1,3 @@
-from pydantic.alias_generators import to_camel
-from pydantic.config import ConfigDict
 from os import getenv
 
 from dotenv import load_dotenv
@@ -10,6 +8,8 @@ from langchain_core.messages import HumanMessage
 from langchain_core.prompts.chat import SystemMessagePromptTemplate
 from langchain_openai import ChatOpenAI
 from pydantic import BaseModel, Field
+from pydantic.alias_generators import to_camel
+from pydantic.config import ConfigDict
 
 load_dotenv()
 
@@ -71,8 +71,12 @@ math_agent = create_agent(
 class LLMResponse(BaseModel):
     model_config = ConfigDict(alias_generator=to_camel, populate_by_name=True)
 
-    nfl_response: NflResponse = Field(..., description="The response from the NFL search via the LLM.")
-    math_response: MathResponse = Field(..., description="The response from the Math agent via the LLM.")
+    nfl_response: NflResponse = Field(
+        ..., description="The response from the NFL search via the LLM."
+    )
+    math_response: MathResponse = Field(
+        ..., description="The response from the Math agent via the LLM."
+    )
 
 
 async def make_llm_calls() -> None:

@@ -839,6 +839,11 @@ dependencies = [
     { name = "uvicorn" },
 ]
 
+[package.dev-dependencies]
+dev = [
+    { name = "pyrefly" },
+]
+
 [package.metadata]
 requires-dist = [
     { name = "black", specifier = ">=25.11.0" },
@@ -855,6 +860,9 @@ requires-dist = [
     { name = "pyrefly", specifier = ">=0.44.2" },
     { name = "uvicorn", specifier = ">=0.38.0" },
 ]
+
+[package.metadata.requires-dev]
+dev = [{ name = "pyrefly", specifier = ">=0.44.2" }]
 
 [[package]]
 name = "regex"

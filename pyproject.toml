@@ -8,7 +8,7 @@ dependencies = [
   "black>=25.11.0",
   "cachetools>=6.2.2",
   "cachetools-async>=0.0.5",
-  "fastapi[standard]>=0.122.0",
+  "fastapi[standard]>=0.124.0",
   "httpx>=0.28.1",
   "isort>=7.0.0",
   "langchain>=1.1.2",
@@ -23,7 +23,4 @@ dependencies = [
 [tool]
 
 [tool.pyrefly]
-project-includes = [
-    "**/*.py*",
-    "**/*.ipynb",
-]
+project-includes = ["**/*.py*", "**/*.ipynb"]

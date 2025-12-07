@@ -79,7 +79,7 @@ class LLMResponse(BaseModel):
     )
 
 
-async def make_llm_calls() -> None:
+async def make_llm_calls() -> LLMResponse:
     """
     Make calls to LLMs for NFL and Math responses.
 

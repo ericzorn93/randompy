@@ -2,6 +2,8 @@ import http
 import logging
 import uuid
 from typing import Any, Dict, List
+from cachetools import TTLCache
+from cachetools_async import cached
 
 from fastapi import FastAPI, HTTPException, Response
 from httpx import AsyncClient, HTTPStatusError
@@ -55,6 +57,28 @@ class HealthcheckResponse(BaseModel):
     )
 
 
+@cached(cache=TTLCache(maxsize=100, ttl=30))
+async def find_todos() -> List[TodoItemWithArtifact]:
+  """
+  Find all todos from the endpoint in JSON placeholder
+
+  Returns:
+      List[TodoItemWithArtifact]: Parsed list of todo items with artifact IDs
+  """
+
+  async with AsyncClient() as client:
+    response = await client.get("https://jsonplaceholder.typicode.com/todos")
+    response.raise_for_status()
+    logger.info(f"Todos status: {response.status_code}")
+    data: List[Dict[str, Any]] = response.json()
+    todos: List[TodoItemWithArtifact] = [
+        TodoItemWithArtifact.model_validate(item) for item in data
+    ]
+
+    return todos
+
+
+
 @app.get(
     "/healthz",
     response_model=HealthcheckResponse,
@@ -72,20 +96,8 @@ async def health_check() -> HealthcheckResponse:
     description="Fetch a list of todo items with computed artifact IDs.",
 )
 async def get_todos(res: Response) -> List[TodoItemWithArtifact]:
-    async with AsyncClient() as client:
-        response = await client.get("https://jsonplaceholder.typicode.com/todos")
-        response.raise_for_status()
-        logger.info(f"Todos status: {response.status_code}")
-
-        cf_ray = response.headers.get("cf-ray", "unknown")
-        res.headers["cf-ray"] = cf_ray
-
-        data: List[Dict[str, Any]] = response.json()
-        todos: List[TodoItemWithArtifact] = [
-            TodoItemWithArtifact.model_validate(item) for item in data
-        ]
-
-        return todos
+    todos = await find_todos()
+    return todos
 
 
 @app.get(

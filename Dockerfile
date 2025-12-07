@@ -15,7 +15,7 @@ COPY pyproject.toml ./
 
 # Create the virtualenv (uv uses .venv) and sync the project environment
 RUN uv venv --python python && \
-  uv sync
+  uv sync --no-dev
 
 FROM python:3.14-alpine
 WORKDIR /app

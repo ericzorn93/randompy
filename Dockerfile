@@ -28,4 +28,4 @@ RUN apk add --no-cache curl
 # Use uvicorn (uv) from the virtualenv to run the FastAPI app
 # Assumes your application creates a FastAPI app named `app` in `main.py`.
 EXPOSE 8090
-CMD ["/app/.venv/bin/uvicorn", "main:app", "--host", "127.0.0.1", "--port", "8090"]
+CMD ["/app/.venv/bin/uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8090"]

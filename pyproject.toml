@@ -11,6 +11,10 @@ dependencies = [
   "fastapi[standard]>=0.122.0",
   "httpx>=0.28.1",
   "isort>=7.0.0",
+  "langchain>=1.1.2",
+  "langchain-core>=1.1.1",
+  "langchain-openai>=1.1.0",
+  "load-dotenv>=0.1.0",
   "pydantic>=2.12.5",
   "uvicorn>=0.38.0",
 ]

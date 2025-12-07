@@ -1,3 +1,4 @@
+from llm import make_llm_calls, LLMResponse
 import http
 import logging
 import uuid
@@ -125,3 +126,8 @@ async def get_single_todo(todo_id: int, res: Response) -> TodoItemWithArtifact:
         todo: TodoItemWithArtifact = TodoItemWithArtifact.model_validate(data)
 
         return todo
+
+
+@app.get("/ai")
+async def make_ai_call() -> LLMResponse:
+    return await make_llm_calls()

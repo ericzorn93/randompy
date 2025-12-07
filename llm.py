@@ -60,6 +60,7 @@ nfl_llm = llm.with_structured_output(NflResponse)
 math_agent = create_agent(
     model=llm,
     tools=[multiply_numbers],
+    # pyrefly: ignore [bad-argument-type]
     system_prompt=SystemMessagePromptTemplate.from_template(
         "You are a helpful math assistant. You can perform only math equation solution when asked."
         "You must use the multiply_numberstool perform any math calculations where there are multiplication."

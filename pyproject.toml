@@ -16,5 +16,14 @@ dependencies = [
   "langchain-openai>=1.1.0",
   "load-dotenv>=0.1.0",
   "pydantic>=2.12.5",
+  "pyrefly>=0.44.2",
   "uvicorn>=0.38.0",
+]
+
+[tool]
+
+[tool.pyrefly]
+project-includes = [
+    "**/*.py*",
+    "**/*.ipynb",
 ]

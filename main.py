@@ -57,7 +57,7 @@ class HealthcheckResponse(BaseModel):
     )
 
 
-@async_cached(cache=TTLCache(maxsize=10, ttl=30))
+@async_cached(cache=TTLCache(maxsize=10, ttl=10))
 async def find_todos() -> List[TodoItemWithArtifact]:
     """
     Find all todos from the endpoint in JSON placeholder

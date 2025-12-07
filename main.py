@@ -2,9 +2,9 @@ import http
 import logging
 import uuid
 from typing import Any, Dict, List
-from cachetools import TTLCache
-from cachetools_async import cached
 
+from cachetools import TTLCache
+from cachetools_async import cached as async_cached
 from fastapi import FastAPI, HTTPException, Response
 from httpx import AsyncClient, HTTPStatusError
 from pydantic import BaseModel, Field, computed_field
@@ -57,26 +57,25 @@ class HealthcheckResponse(BaseModel):
     )
 
 
-@cached(cache=TTLCache(maxsize=100, ttl=30))
+@async_cached(cache=TTLCache(maxsize=100, ttl=30))
 async def find_todos() -> List[TodoItemWithArtifact]:
-  """
-  Find all todos from the endpoint in JSON placeholder
+    """
+    Find all todos from the endpoint in JSON placeholder
 
-  Returns:
-      List[TodoItemWithArtifact]: Parsed list of todo items with artifact IDs
-  """
+    Returns:
+        List[TodoItemWithArtifact]: Parsed list of todo items with artifact IDs
+    """
 
-  async with AsyncClient() as client:
-    response = await client.get("https://jsonplaceholder.typicode.com/todos")
-    response.raise_for_status()
-    logger.info(f"Todos status: {response.status_code}")
-    data: List[Dict[str, Any]] = response.json()
-    todos: List[TodoItemWithArtifact] = [
-        TodoItemWithArtifact.model_validate(item) for item in data
-    ]
+    async with AsyncClient() as client:
+        response = await client.get("https://jsonplaceholder.typicode.com/todos")
+        response.raise_for_status()
+        logger.info(f"Todos status: {response.status_code}")
+        data: List[Dict[str, Any]] = response.json()
+        todos: List[TodoItemWithArtifact] = [
+            TodoItemWithArtifact.model_validate(item) for item in data
+        ]
 
-    return todos
-
+        return todos
 
 
 @app.get(

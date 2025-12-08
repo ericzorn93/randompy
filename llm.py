@@ -1,3 +1,4 @@
+import asyncio
 from os import getenv
 
 from dotenv import load_dotenv
@@ -89,15 +90,23 @@ async def make_llm_calls() -> LLMResponse:
     """
 
     question1 = "What NFL team won the Super Bowl in the year Justin Beiber was born? Make sure to include the winning team name and the year in your response."
-    nfl_response = await nfl_llm.ainvoke(question1)
 
     num_a = 2
     num_b = 5
     question2 = f"What is {num_a} multiplied by {num_b}?"
-    math_response = await math_agent.ainvoke({"messages": [HumanMessage(content=question2)]})
+
+    tasks = [
+        asyncio.create_task(nfl_llm.ainvoke(question1)),
+        asyncio.create_task(
+            math_agent.ainvoke({"messages": [HumanMessage(content=question2)]})
+        ),
+    ]
+
+    nfl_response, math_response = await asyncio.gather(*tasks)
+    structured_nfl_response: NflResponse = nfl_response  # type: ignore
     structured_math_response: MathResponse = math_response["structured_response"]
 
     return LLMResponse(
-        nfl_response=nfl_response,
+        nfl_response=structured_nfl_response,
         math_response=structured_math_response,
     )

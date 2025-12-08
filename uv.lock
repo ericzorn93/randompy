@@ -835,7 +835,6 @@ dependencies = [
     { name = "langchain-openai" },
     { name = "load-dotenv" },
     { name = "pydantic" },
-    { name = "pyrefly" },
     { name = "uvicorn" },
 ]
 
@@ -857,7 +856,6 @@ requires-dist = [
     { name = "langchain-openai", specifier = ">=1.1.0" },
     { name = "load-dotenv", specifier = ">=0.1.0" },
     { name = "pydantic", specifier = ">=2.12.5" },
-    { name = "pyrefly", specifier = ">=0.44.2" },
     { name = "uvicorn", specifier = ">=0.38.0" },
 ]
 

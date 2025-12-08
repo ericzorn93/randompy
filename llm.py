@@ -89,7 +89,7 @@ async def make_llm_calls() -> LLMResponse:
     """
 
     question1 = "What NFL team won the Super Bowl in the year Justin Beiber was born? Make sure to include the winning team name and the year in your response."
-    nfl_response = nfl_llm.invoke(question1)
+    nfl_response = await nfl_llm.ainvoke(question1)
 
     num_a = 2
     num_b = 5

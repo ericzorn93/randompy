@@ -1,31 +1,31 @@
-FROM python:3.14-alpine AS builder
+FROM python:3.14-alpine
 
 ENV PYTHONUNBUFFERED=1 \
   PYTHONDONTWRITEBYTECODE=1
+
 WORKDIR /app
 
-# Install native build tools and git so uv can compile/build as needed
-RUN apk add --no-cache --update build-base libffi-dev openssl-dev git curl
+# Install system deps
+RUN apk add --no-cache build-base libffi-dev openssl-dev git curl
 
-# Install uv (fast package manager) into the builder image and use it to create
-# and populate the project virtualenv based on pyproject.toml
-RUN python -m pip install --upgrade pip
-RUN python -m pip install --no-cache-dir uv
-COPY pyproject.toml ./
+# Install uv (Python package installer) and create the venv
+RUN python -m pip install --upgrade pip && \
+  python -m pip install --no-cache-dir uv
 
-# Create the virtualenv (uv uses .venv) and sync the project environment
+COPY pyproject.toml .
+
+# Create and sync the virtualenv (.venv)
 RUN uv venv --python python && \
   uv sync --no-dev
 
-FROM python:3.14-alpine
-WORKDIR /app
-COPY --from=builder /app/.venv .venv/
+# Copy application code
 COPY . .
 
-# Install curl in the final image (alpine) to support things like health checks
-RUN apk add --no-cache curl
+# Make the virtualenv executables available
+ENV PATH="/app/.venv/bin:$PATH"
 
-# Use uvicorn (uv) from the virtualenv to run the FastAPI app
-# Assumes your application creates a FastAPI app named `app` in `main.py`.
+# Expose the port Fly will map internally
 EXPOSE 8090
-CMD ["/app/.venv/bin/uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8090"]
+
+# Bind to 0.0.0.0 and respect Fly's PORT env
+CMD ["sh", "-c", "uvicorn main:app --host 0.0.0.0 --port ${PORT:-8090}"]

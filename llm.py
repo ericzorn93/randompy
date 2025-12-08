@@ -94,7 +94,7 @@ async def make_llm_calls() -> LLMResponse:
     num_a = 2
     num_b = 5
     question2 = f"What is {num_a} multiplied by {num_b}?"
-    math_response = math_agent.invoke({"messages": [HumanMessage(content=question2)]})
+    math_response = await math_agent.ainvoke({"messages": [HumanMessage(content=question2)]})
     structured_math_response: MathResponse = math_response["structured_response"]
 
     return LLMResponse(

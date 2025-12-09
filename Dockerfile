@@ -30,7 +30,7 @@ ENV PYTHONUNBUFFERED=1 \
 WORKDIR /app
 
 # Install only runtime libraries (smaller than build deps)
-RUN apk add --no-cache libffi openssl
+RUN apk add --no-cache libffi openssl curl
 
 # Copy the application and the prepared virtualenv from the builder stage
 COPY --from=builder /app /app
@@ -39,7 +39,7 @@ COPY --from=builder /app /app
 ENV PATH="/app/.venv/bin:$PATH"
 
 # Expose the port Fly will map internally
-EXPOSE 8090
+EXPOSE 8080
 
 # Bind to 0.0.0.0 and respect Fly's PORT env
-CMD ["sh", "-c", "uvicorn main:app --host 0.0.0.0 --port ${PORT:-8090}"]
+CMD ["/app/.venv/bin/uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8080"]

@@ -42,4 +42,4 @@ ENV PATH="/app/.venv/bin:$PATH"
 EXPOSE 8080
 
 # Bind to 0.0.0.0 and respect Fly's PORT env
-CMD ["/app/.venv/bin/uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8080"]
+CMD ["/app/.venv/bin/uvicorn", "main:app", "--host", "", "--port", "8080"]

@@ -27,7 +27,11 @@ async def main() -> None:
     statuses = await asyncio.gather(*tasks)
     end = time.perf_counter()
     success_codes = [status for status in statuses if status == http.HTTPStatus.OK]
-    print(f"All calls completed with success codes: {len(success_codes)} in {end - start:.2f} seconds")
+
+    total_time = end - start
+    print(
+        f"All calls completed with success codes: {len(success_codes)} in {total_time:.2f} seconds"
+    )
 
 
 if __name__ == "__main__":

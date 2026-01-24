@@ -1,6 +1,7 @@
 import http
 import logging
 import uuid
+from datetime import datetime, timezone
 from typing import Any, Dict, List
 
 from cachetools import TTLCache
@@ -56,6 +57,11 @@ class HealthcheckResponse(BaseModel):
         "ok",
         description="The health status of the API",
         examples=["ok", "degraded", "down"],
+    )
+
+    timestamp: datetime = Field(
+        default_factory=lambda: datetime.now(tz=timezone.utc),
+        description="The current timestamp in UTC",
     )
 
 

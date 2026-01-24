@@ -1,20 +1,21 @@
-import httpx
 import asyncio
 import http
 
+import httpx
 
 _sem = asyncio.Semaphore(100)
 
+
 async def make_call(i) -> int:
-  async with _sem:
-    async with httpx.AsyncClient() as client:
-        print(f"Making call {i}")
-        response = await client.get("https://randompy.fly.dev/healthz")
-        print(response.status_code)
+    async with _sem:
+        async with httpx.AsyncClient() as client:
+            print(f"Making call {i}")
+            response = await client.get("https://randompy.fly.dev/healthz")
+            print(response.status_code)
 
-    await asyncio.sleep(0.1)
+        await asyncio.sleep(0.1)
 
-  return response.status_code
+    return response.status_code
 
 
 async def main() -> None:

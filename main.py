@@ -1,5 +1,6 @@
 import http
 import logging
+import random
 import uuid
 from datetime import datetime, timezone
 from typing import Any, Dict, List
@@ -94,6 +95,29 @@ async def find_todos() -> List[TodoItemWithArtifact]:
 )
 async def health_check() -> HealthcheckResponse:
     return HealthcheckResponse(status="ok")
+
+
+@app.get(
+    "/random",
+    response_model=Dict[str, int | str],
+    tags=["Random"],
+    description="Return a random number and a random UUID",
+)
+async def random_data() -> Dict[str, int | str]:
+    """Return a random number and a random UUID.
+
+    This endpoint generates a random integer between 1 and 100 and a random UUID,
+    then returns them in a JSON response.
+
+    Returns:
+        Dict[str, int | str]: A dictionary containing the random number and UUID.
+    """
+    random_number = random.randint(
+        1, 1000
+    )  # Generate a random integer between 1 and 100
+    random_uuid = str(uuid.uuid4())  # Generate a random UUID
+
+    return {"random_number": random_number, "random_uuid": random_uuid}
 
 
 @app.get(

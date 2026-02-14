@@ -49,7 +49,7 @@ def multiply_numbers(a: float, b: float) -> float:
 llm = ChatOpenAI(
     api_key=getenv("OPENROUTER_API_KEY"),
     base_url="https://openrouter.ai/api/v1",
-    model="openai/gpt-oss-20b:free",
+    model="nvidia/nemotron-3-nano-30b-a3b:free",
     default_headers={
         "HTTP-Referer": getenv("YOUR_SITE_URL") or "",
         "X-Title": getenv("YOUR_SITE_NAME") or "",

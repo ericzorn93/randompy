@@ -64,7 +64,7 @@ math_agent = create_agent(
     # pyrefly: ignore [bad-argument-type]
     system_prompt=SystemMessagePromptTemplate.from_template(
         "You are a helpful math assistant. You can perform only math equation solution when asked."
-        "You must use the multiply_numberstool perform any math calculations where there are multiplication."
+        "You must use the multiply_numbers tool perform any math calculations where there are multiplication."
     ).format(),
     response_format=ProviderStrategy(MathResponse),
 )

@@ -69,7 +69,7 @@ class HealthcheckResponse(BaseModel):
 class RandomResponse(BaseModel):
     model_config = ConfigDict(alias_generator=to_camel, populate_by_name=True)
 
-    random_number: int = Field(..., description="A random integer between 1 and 100")
+    random_number: int = Field(..., description="A random integer between 1 and 1000")
     random_uuid: uuid.UUID = Field(..., description="A random UUID string")
     timestamp: datetime = Field(
         default_factory=lambda: datetime.now(tz=timezone.utc),

@@ -66,6 +66,17 @@ class HealthcheckResponse(BaseModel):
     )
 
 
+class RandomResponse(BaseModel):
+    model_config = ConfigDict(alias_generator=to_camel, populate_by_name=True)
+
+    random_number: int = Field(..., description="A random integer between 1 and 100")
+    random_uuid: uuid.UUID = Field(..., description="A random UUID string")
+    timestamp: datetime = Field(
+        default_factory=lambda: datetime.now(tz=timezone.utc),
+        description="The current timestamp in UTC",
+    )
+
+
 @async_cached(cache=TTLCache(maxsize=10, ttl=30))
 async def find_todos() -> List[TodoItemWithArtifact]:
     """
@@ -99,25 +110,25 @@ async def health_check() -> HealthcheckResponse:
 
 @app.get(
     "/random",
-    response_model=Dict[str, int | str],
+    response_model=RandomResponse,
     tags=["Random"],
     description="Return a random number and a random UUID",
 )
-async def random_data() -> Dict[str, int | str]:
+async def random_data() -> RandomResponse:
     """Return a random number and a random UUID.
 
     This endpoint generates a random integer between 1 and 100 and a random UUID,
     then returns them in a JSON response.
 
     Returns:
-        Dict[str, int | str]: A dictionary containing the random number and UUID.
+        RandomResponse: A response model containing the random number, UUID, and timestamp.
     """
     random_number = random.randint(
         1, 1000
     )  # Generate a random integer between 1 and 100
-    random_uuid = str(uuid.uuid4())  # Generate a random UUID
+    random_uuid = uuid.uuid4()  # Generate a random UUID
 
-    return {"random_number": random_number, "random_uuid": random_uuid}
+    return RandomResponse(random_number=random_number, random_uuid=random_uuid)
 
 
 @app.get(

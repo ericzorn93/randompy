@@ -3,10 +3,12 @@ import http
 import time
 
 import httpx
+from cachetools.func import ttl_cache
 
 _sem = asyncio.Semaphore(100)
 
 
+@ttl_cache(maxsize=1000, ttl=60)
 async def make_call(i) -> int:
     async with _sem:
         async with httpx.AsyncClient() as client:

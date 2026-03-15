@@ -1,6 +1,7 @@
 import http
 import logging
 import random
+import sys
 import uuid
 from datetime import datetime, timezone
 from typing import Any, Dict, List
@@ -12,11 +13,22 @@ from httpx import AsyncClient, HTTPStatusError
 from pydantic import BaseModel, Field, computed_field
 from pydantic.alias_generators import to_camel
 from pydantic.config import ConfigDict
+from pythonjsonlogger import jsonlogger
 
 from llm import LLMResponse, make_llm_calls
 
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger("todoApiLogger")
+# 1. Create a logger
+logger = logging.getLogger()
+logHandler = logging.StreamHandler(sys.stdout)
+
+# 2. Define the JSON format
+# The fmt parameter defines which fields are included in the JSON object
+formatter = jsonlogger.JsonFormatter("%(asctime)s %(levelname)s %(name)s %(message)s")
+
+# 3. Add the formatter to the handler and the handler to the logger
+logHandler.setFormatter(formatter)
+logger.addHandler(logHandler)
+logger.setLevel(logging.INFO)
 
 app = FastAPI(
     title="Todo API Proxy",

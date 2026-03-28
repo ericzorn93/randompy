@@ -1,6 +1,7 @@
 import http
 import logging
 import random
+import string
 import sys
 import uuid
 from datetime import datetime, timezone
@@ -185,3 +186,18 @@ async def get_single_todo(todo_id: int, res: Response) -> TodoItemWithArtifact:
 @app.get("/llm", response_model=LLMResponse, tags=["LLM"], description="Make LLM calls")
 async def make_ai_call() -> LLMResponse:
     return await make_llm_calls()
+
+
+@app.get(
+    "/generate-text", response_model=str, tags=["Text"], description="Generate text"
+)
+async def generate_text() -> str:
+    """
+    Generate a random string of 10 characters.
+
+    Returns:
+        str: A random string of 10 characters
+    """
+
+    random_chars = random.choices(string.ascii_letters + string.digits, k=10)
+    return "".join(random_chars)

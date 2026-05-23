@@ -5,7 +5,6 @@ import sys
 import time
 
 import httpx
-from cachetools.func import ttl_cache
 from pythonjsonlogger import jsonlogger
 
 # 1. Create a logger
@@ -24,7 +23,6 @@ logger.setLevel(logging.INFO)
 _sem = asyncio.Semaphore(100)
 
 
-@ttl_cache(maxsize=1000, ttl=60)
 async def make_call(i) -> int:
     async with _sem:
         async with httpx.AsyncClient() as client:

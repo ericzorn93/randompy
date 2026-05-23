@@ -35,6 +35,9 @@ RUN apk add --no-cache libffi openssl curl go
 # Copy the application and the prepared virtualenv from the builder stage
 COPY --from=builder /app /app
 
+# Initialize Go modules and tidy up dependencies
+RUN go mod tidy
+
 # Make the virtualenv executables available
 ENV PATH="/app/.venv/bin:$PATH"
 

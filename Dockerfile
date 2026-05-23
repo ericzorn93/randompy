@@ -6,7 +6,7 @@ ENV PYTHONUNBUFFERED=1 \
 WORKDIR /app
 
 # Install build-time system deps
-RUN apk add --no-cache build-base libffi-dev openssl-dev git curl
+RUN apk add --no-cache build-base libffi-dev openssl-dev git curl go
 
 # Install uv and create the virtualenv + install deps
 RUN python -m pip install --upgrade pip && \

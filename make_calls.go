@@ -54,7 +54,18 @@ func main() {
 	sem := semaphore.NewWeighted(int64(maxConcurrency))
 	var wg sync.WaitGroup
 
-	client := &http.Client{Timeout: timeout}
+	transport := &http.Transport{
+		MaxIdleConns:          maxConcurrency,
+		MaxIdleConnsPerHost:   maxConcurrency,
+		MaxConnsPerHost:       maxConcurrency,
+		IdleConnTimeout:       90 * time.Second,
+		TLSHandshakeTimeout:   10 * time.Second,
+		ExpectContinueTimeout: 1 * time.Second,
+	}
+	client := &http.Client{
+		Transport: transport,
+		Timeout:   timeout,
+	}
 	statuses := make([]int, requestCount)
 	var statusMu sync.Mutex
 	var errorOccurred bool

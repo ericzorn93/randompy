@@ -7,7 +7,11 @@ const REQUEST_URL = "https://randompy.fly.dev/todos";
 const TIMEOUT_MS = 30_000;
 
 const url = new URL(REQUEST_URL);
-const agent = new https.Agent({ keepAlive: true, maxSockets: MAX_CONCURRENCY });
+const agent = new https.Agent({
+  keepAlive: true,
+  maxSockets: MAX_CONCURRENCY,
+  maxFreeSockets: MAX_CONCURRENCY,
+});
 
 function log(message, ...args) {
   const timestamp = new Date().toISOString();

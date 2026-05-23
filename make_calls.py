@@ -18,7 +18,10 @@ logHandler.setFormatter(formatter)
 logger.addHandler(logHandler)
 logger.setLevel(logging.INFO)
 
-_sem = asyncio.Semaphore(100)
+# Concurrency limit used for both the semaphore and the HTTP connection pool
+MAX_CONCURRENCY = 100
+
+_sem = asyncio.Semaphore(MAX_CONCURRENCY)
 
 
 async def make_call(i: int, client: httpx.AsyncClient) -> int:
@@ -46,7 +49,8 @@ async def make_call(i: int, client: httpx.AsyncClient) -> int:
 
 async def main() -> None:
   timeout = httpx.Timeout(30.0, connect=10.0)
-  async with httpx.AsyncClient(timeout=timeout, follow_redirects=False) as client:
+  limits = httpx.Limits(max_connections=MAX_CONCURRENCY, max_keepalive_connections=MAX_CONCURRENCY)
+  async with httpx.AsyncClient(timeout=timeout, limits=limits, follow_redirects=False) as client:
     start = time.perf_counter()
     tasks = [asyncio.create_task(make_call(i, client)) for i in range(1_000)]
     statuses = await asyncio.gather(*tasks)

@@ -30,7 +30,7 @@ ENV PYTHONUNBUFFERED=1 \
 WORKDIR /app
 
 # Install only runtime libraries (smaller than build deps)
-RUN apk add --no-cache libffi openssl curl
+RUN apk add --no-cache libffi openssl curl go
 
 # Copy the application and the prepared virtualenv from the builder stage
 COPY --from=builder /app /app

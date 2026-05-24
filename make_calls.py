@@ -48,7 +48,7 @@ async def worker(
         except httpx.HTTPError as exc:
             elapsed = time.perf_counter() - start
             logger.error("Call %d failed after %.2f seconds: %s", index, elapsed, exc)
-            statuses[index - 1] = 0
+            statuses[index] = 0
         finally:
             queue.task_done()
 
@@ -70,7 +70,7 @@ async def main() -> None:
 
         # Pre-fill a queue with every index — workers drain it
         queue: asyncio.Queue = asyncio.Queue()
-        for i in range(1, REQUEST_COUNT + 1):
+        for i in range(0, REQUEST_COUNT):
             queue.put_nowait(i)
 
         # Add sentinel values so workers stop cleanly once the queue is empty

@@ -40,7 +40,7 @@ async def worker(
         start = time.perf_counter()
         try:
             response = await client.get(REQUEST_URL)
-            statuses[index - 1] = response.status_code
+            statuses[index] = response.status_code
             if VERBOSE:
                 elapsed = time.perf_counter() - start
                 logger.info("Worker %d: call %d finished in %.2f seconds (status %d)",

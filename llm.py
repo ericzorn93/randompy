@@ -89,7 +89,7 @@ async def make_llm_calls() -> LLMResponse:
         LLMResponse: Combined responses from NFL and Math LLMs.
     """
 
-    question1 = "What NFL team won the Super Bowl in the year Justin Beiber was born? Make sure to include the winning team name and the year in your response."
+    question1 = "What NFL team won the Super Bowl in the year Justin Beiber was born? Make sure to include the winning team name and the year in your response. Always validate what you are thinking before responding."
 
     num_a = 2
     num_b = 5

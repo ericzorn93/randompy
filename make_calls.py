@@ -43,8 +43,13 @@ async def worker(
             statuses[index] = response.status_code
             if VERBOSE:
                 elapsed = time.perf_counter() - start
-                logger.info("Worker %d: call %d finished in %.2f seconds (status %d)",
-                            worker_id, index, elapsed, response.status_code)
+                logger.info(
+                    "Worker %d: call %d finished in %.2f seconds (status %d)",
+                    worker_id,
+                    index,
+                    elapsed,
+                    response.status_code,
+                )
         except httpx.HTTPError as exc:
             elapsed = time.perf_counter() - start
             logger.error("Call %d failed after %.2f seconds: %s", index, elapsed, exc)

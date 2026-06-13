@@ -7,7 +7,7 @@ from langchain.agents.structured_output import ProviderStrategy
 from langchain.tools import tool
 from langchain_core.messages import HumanMessage
 from langchain_core.prompts.chat import SystemMessagePromptTemplate
-from langchain_openai import ChatOpenAI
+from langchain_openrouter import ChatOpenRouter
 from pydantic import BaseModel, Field
 from pydantic.alias_generators import to_camel
 from pydantic.config import ConfigDict
@@ -20,7 +20,7 @@ class NflResponse(BaseModel):
 
     team_name: str = Field(
         ...,
-        description="The name of the NFL team that WON the Super Bowl in the specified year.",
+        description="The name of the NFL team that WON the Super Bowl in the specified year. Example: New York Giants",
     )
     year: int = Field(..., description="The year in which the Super Bowl was won.")
 
@@ -46,16 +46,11 @@ def multiply_numbers(a: float, b: float) -> float:
     return a * b
 
 
-llm = ChatOpenAI(
-    api_key=getenv("OPENROUTER_API_KEY"),
-    base_url="https://openrouter.ai/api/v1",
-    model="nvidia/nemotron-3-nano-30b-a3b:free",
-    default_headers={
-        "HTTP-Referer": getenv("YOUR_SITE_URL") or "",
-        "X-Title": getenv("YOUR_SITE_NAME") or "",
-    },
+llm = ChatOpenRouter(
+    model="nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
+    temperature=0.0,
 )
-nfl_llm = llm.with_structured_output(NflResponse)
+nfl_llm = llm.with_structured_output(NflResponse, method="json_schema", strict=True)
 
 
 math_agent = create_agent(

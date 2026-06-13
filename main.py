@@ -138,7 +138,7 @@ async def random_data() -> RandomResponse:
     """
     random_number = random.randint(
         1, 1000
-    )  # Generate a random integer between 1 and 100
+    )  # Generate a random integer between 1 and 1000
     random_uuid = uuid.uuid4()  # Generate a random UUID
 
     return RandomResponse(random_number=random_number, random_uuid=random_uuid)

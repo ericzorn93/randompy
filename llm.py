@@ -61,7 +61,7 @@ math_agent = create_agent(
         "You are a helpful math assistant. You can perform only math equation solution when asked."
         "You must use the multiply_numbers tool perform any math calculations where there are multiplication."
     ).format(),
-    response_format=ProviderStrategy(MathResponse),
+    response_format=ProviderStrategy(MathResponse, strict=True),
 )
 
 

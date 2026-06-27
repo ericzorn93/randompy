@@ -1,5 +1,5 @@
 import asyncio
-from os import getenv
+import os
 
 from dotenv import load_dotenv
 from langchain.agents import create_agent
@@ -7,7 +7,9 @@ from langchain.agents.structured_output import ProviderStrategy
 from langchain.tools import tool
 from langchain_core.messages import HumanMessage
 from langchain_core.prompts.chat import SystemMessagePromptTemplate
-from langchain_openrouter import ChatOpenRouter
+
+# from langchain_openrouter import ChatOpenRouter
+from langchain_openai import ChatOpenAI
 from pydantic import BaseModel, Field
 from pydantic.alias_generators import to_camel
 from pydantic.config import ConfigDict
@@ -46,9 +48,16 @@ def multiply_numbers(a: float, b: float) -> float:
     return a * b
 
 
-llm = ChatOpenRouter(
-    model="nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
-    temperature=0.0,
+# llm = ChatOpenRouter(
+#     model="nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
+#     temperature=0.0,
+# )
+
+llm = ChatOpenAI(
+    base_url="https://gateway.ai.cloudflare.com/v1/e93b61784a3f070859a6640663a3317e/challah-social/compat",
+    model="workers-ai/@cf/nvidia/nemotron-3-120b-a12b",
+    api_key=os.getenv("CLOUDFLARE_API_GATEWAY_API_KEY"),
+    default_headers={"cf-aig-gateway-id": "challah-social"},
 )
 nfl_llm = llm.with_structured_output(NflResponse, method="json_schema", strict=True)
 

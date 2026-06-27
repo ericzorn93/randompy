@@ -55,7 +55,7 @@ def multiply_numbers(a: float, b: float) -> float:
 
 llm = ChatOpenAI(
     base_url="https://gateway.ai.cloudflare.com/v1/e93b61784a3f070859a6640663a3317e/challah-social/compat",
-    model="workers-ai/@cf/nvidia/nemotron-3-120b-a12b",
+    model="workers-ai/@cf/google/gemma-4-26b-a4b-it",
     api_key=os.getenv("CLOUDFLARE_API_GATEWAY_API_KEY"),
     default_headers={"cf-aig-gateway-id": "challah-social"},
 )
